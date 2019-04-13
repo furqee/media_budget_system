@@ -50,6 +50,10 @@ Route::get('home/lang/{any}','HomeController@getLang');
 
 Route::get('/set_theme/{any}', 'HomeController@set_theme');
 
+Route::post('/utilized_amount', 'DigitaladsController@utlizedAmount');
+Route::post('/approved_budget', 'DigitaladsController@approvedBudget');
+Route::post('/approved_utilized_budget', 'DigitaladsController@approvedUtilizedBudget');
+
 include('pages.php');
 
 
