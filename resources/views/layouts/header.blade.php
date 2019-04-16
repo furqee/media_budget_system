@@ -7,12 +7,12 @@
           <a class="navbar-brand" href="{{ url('dashboard')}}">
             
             @if(file_exists(public_path().'/uploads/images/'.config('sximo')['cnf_logo']) && config('sximo')['cnf_logo'] !='')
-                <img src="{{ asset('uploads/images/'.config('sximo')['cnf_logo'])}}" alt="{{ config('sximo')['cnf_appname'] }}" width="40" />
+                <img src="{{ asset('uploads/images/'.config('sximo')['cnf_logo'])}}" alt="{{ config('sximo')['cnf_appname'] }}" width="200" height="50" />
                 @else
                 <img src="{{ asset('uploads/logo.png')}}" alt="{{ config('sximo')['cnf_appname'] }}" width="40" />
                 @endif
             
-                <div> {{ config('sximo')['cnf_appname'] }} </div>
+                <!-- <div> {{ config('sximo')['cnf_appname'] }} </div> -->
           </a>
       </div>
 

@@ -24,4 +24,9 @@ Route::resource('adtypes','AdtypesController');
 Route::resource('adplatforms','AdplatformsController');
 // End Routes for adplatforms 
 
+                    
+// Start Routes for reportdigitalads 
+Route::resource('reportdigitalads','ReportdigitaladsController');
+// End Routes for reportdigitalads 
+
                     ?>

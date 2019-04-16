@@ -1,28 +1,28 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\Others;
+use App\Models\Reportdigitalads;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
 
 
-class OthersController extends Controller {
+class ReportdigitaladsController extends Controller {
 
 	protected $layout = "layouts.main";
 	protected $data = array();	
-	public $module = 'others';
+	public $module = 'reportdigitalads';
 	static $per_page	= '10';
 
 	public function __construct()
 	{		
 		parent::__construct();
-		$this->model = new Others();	
+		$this->model = new Reportdigitalads();	
 		
 		$this->info = $this->model->makeInfo( $this->module);	
 		$this->data = array(
 			'pageTitle'	=> 	$this->info['title'],
 			'pageNote'	=>  $this->info['note'],
-			'pageModule'=> 'others',
+			'pageModule'=> 'reportdigitalads',
 			'return'	=> self::returnUrl()
 			
 		);
@@ -108,7 +108,6 @@ class OthersController extends Controller {
 				if ($validator->passes()) 
 				{
 					$data = $this->validatePost( $request );
-					$data['entry_by'] = session('uid');
 					$id = $this->model->insertRow($data , $request->input( $this->info['key']));
 					
 					/* Insert logs */
@@ -174,8 +173,8 @@ class OthersController extends Controller {
 	public static function display(  )
 	{
 		$mode  = isset($_GET['view']) ? 'view' : 'default' ;
-		$model  = new Others();
-		$info = $model::makeInfo('others');
+		$model  = new Reportdigitalads();
+		$info = $model::makeInfo('reportdigitalads');
 		$data = array(
 			'pageTitle'	=> 	$info['title'],
 			'pageNote'	=>  $info['note']			
@@ -189,7 +188,7 @@ class OthersController extends Controller {
 				$data['row'] =  $row;
 				$data['fields'] 		=  \SiteHelpers::fieldLang($info['config']['grid']);
 				$data['id'] = $id;
-				return view('others.public.view',$data);			
+				return view('reportdigitalads.public.view',$data);			
 			}			
 		} 
 		else {
@@ -213,7 +212,7 @@ class OthersController extends Controller {
 			$pagination->setPath('');
 			$data['i']			= ($page * $params['limit'])- $params['limit']; 
 			$data['pagination'] = $pagination;
-			return view('others.public.index',$data);	
+			return view('reportdigitalads.public.index',$data);	
 		}
 
 	}

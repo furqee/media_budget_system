@@ -16,22 +16,15 @@
 
 <div class="col-md-12">
 						<fieldset><legend> Others</legend>
-									
-									  <div class="form-group  " >
-										<label for="Id" class=" control-label col-md-4 text-left"> Id <span class="asterix"> * </span></label>
-										<div class="col-md-6">
-										  <input  type='text' name='id' id='id' value='{{ $row['id'] }}' 
-						     class='form-control input-sm ' /> 
-										 </div> 
-										 <div class="col-md-2">
-										 	
-										 </div>
-									  </div> 					
+				{!! Form::hidden('id', $row['id']) !!}					
 									  <div class="form-group  " >
 										<label for="Date" class=" control-label col-md-4 text-left"> Date <span class="asterix"> * </span></label>
 										<div class="col-md-6">
-										  <input  type='text' name='date' id='date' value='{{ $row['date'] }}' 
-						     class='form-control input-sm ' /> 
+										  
+				<div class="input-group m-b" style="width:150px !important;">
+					{!! Form::text('date', $row['date'],array('class'=>'form-control input-sm date')) !!}
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div> 
 										 </div> 
 										 <div class="col-md-2">
 										 	
@@ -40,8 +33,7 @@
 									  <div class="form-group  " >
 										<label for="Client" class=" control-label col-md-4 text-left"> Client <span class="asterix"> * </span></label>
 										<div class="col-md-6">
-										  <input  type='text' name='client' id='client' value='{{ $row['client'] }}' 
-						     class='form-control input-sm ' /> 
+										  <select name='client' rows='5' id='client' class='select2 '   ></select> 
 										 </div> 
 										 <div class="col-md-2">
 										 	
@@ -86,20 +78,6 @@
 										 <div class="col-md-2">
 										 	
 										 </div>
-									  </div> 					
-									  <div class="form-group  " >
-										<label for="Created At" class=" control-label col-md-4 text-left"> Created At <span class="asterix"> * </span></label>
-										<div class="col-md-6">
-										  
-				<div class="input-group m-b" style="width:150px !important;">
-					{!! Form::text('created_at', $row['created_at'],array('class'=>'form-control input-sm datetime', 'style'=>'width:150px !important;')) !!}
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-				</div>
-				 
-										 </div> 
-										 <div class="col-md-2">
-										 	
-										 </div>
 									  </div> </fieldset>
 			</div>
 			
@@ -122,6 +100,9 @@
    <script type="text/javascript">
 	$(document).ready(function() { 
 		
+		
+		$("#client").jCombo("{!! url('others/comboselect?filter=tb_clients:id:name') !!}",
+		{  selected_value : '{{ $row["client"] }}' });
 		 
 
 		$('.removeCurrentFiles').on('click',function(){
