@@ -35,7 +35,7 @@
                      <label for="Ad Name" class=" control-label col-md-4 text-left"> Campaign Name <span class="asterix"> * </span></label>
                      <div class="col-md-6">
                         <input  type='text' name='ad_name' id='ad_name' value='{{ $row['ad_name'] }}' 
-                        required     class='form-control input-sm ' /> 
+                        class='form-control input-sm ' /> 
                      </div>
                      <div class="col-md-2">
                      </div>
@@ -43,7 +43,7 @@
                   <div class="form-group  " >
                      <label for="Client" class=" control-label col-md-4 text-left"> Client <span class="asterix"> * </span></label>
                      <div class="col-md-6">
-                        <select name='client' rows='5' id='client' class='select2 ' required  ></select> 
+                        <select name='client' rows='5' id='client' class='select2 '  ></select> 
                      </div>
                      <div class="col-md-2">
                      </div>
@@ -51,7 +51,7 @@
                   <div class="form-group  " >
                      <label for="Platform" class=" control-label col-md-4 text-left"> Platform <span class="asterix"> * </span></label>
                      <div class="col-md-6">
-                        <select name='platform' rows='5' id='platform' class='select2 ' required  ></select> 
+                        <select name='platform' rows='5' id='platform' class='select2 '  ></select> 
                      </div>
                      <div class="col-md-2">
                      </div>
@@ -59,7 +59,7 @@
                   <div class="form-group  " >
                      <label for="Ad Type" class=" control-label col-md-4 text-left"> Ad Type <span class="asterix"> * </span></label>
                      <div class="col-md-6">
-                        <select name='ad_type' rows='5' id='ad_type' class='select2 ' required  ></select> 
+                        <select name='ad_type' rows='5' id='ad_type' class='select2 '  ></select> 
                      </div>
                      <div class="col-md-2">
                      </div>
@@ -99,7 +99,7 @@
                      <label for="Budget" class=" control-label col-md-4 text-left"> Budget <span class="asterix"> * </span></label>
                      <div class="col-md-6">
                         <input  type='text' name='budget' id='budget' value='{{ $row['budget'] }}' 
-                        required     class='form-control input-sm ' /> 
+                        class='form-control input-sm ' /> 
                      </div>
                      <div class="col-md-2">
                      </div>
@@ -109,7 +109,7 @@
                   <div class="form-group  " >
                      <label for="Card Used" class=" control-label col-md-4 text-left"> Card Used <span class="asterix"> * </span></label>
                      <div class="col-md-6">
-                        <select name='card_used' rows='5' id='card_used' class='select2 ' required  >
+                        <select name='card_used' rows='5' id='card_used' class='select2 '  >
                         	<option value="own">Own</option>
                         	<option value="client">Client's</option>
                         </select> 
@@ -171,7 +171,15 @@
    		$.get(removeUrl,function(response){});
    		$(this).parent('div').empty();	
    		return false;
-   	});		
+   	});
+
+      $('#from').on('changeDate', function(ev){
+          $(this).datepicker('hide');
+      });		
+
+      $('#to').on('changeDate', function(ev){
+          $(this).datepicker('hide');
+      });
 
    	var i = 1;
    	$("#add_more").click(function() {
