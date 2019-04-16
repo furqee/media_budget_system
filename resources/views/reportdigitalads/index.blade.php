@@ -135,7 +135,14 @@
 		            @endforeach
 		              
 		        </tbody>
-		      
+		    <tfoot>
+            <tr>
+                <th colspan="6" style="text-align:right">Total:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
 		    </table>
 			<input type="hidden" name="action_task" value="" />
 			
@@ -160,7 +167,63 @@ $(document).ready(function(){
 			$('input[name="action_task"]').val('copy');
 			$('#SximoTable').submit();// do the rest here	
 		}
-	})	
+	});
+
+	$('#reportdigitaladsTable').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 6 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 6 ).footer() ).html(
+                pageTotal
+            );
+
+            // Total over all pages
+            total = api
+                .column( 7 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 7 ).footer() ).html(
+                pageTotal
+            );
+        }
+    } );	
 	
 });	
 </script>	
