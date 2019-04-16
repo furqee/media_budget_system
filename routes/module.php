@@ -24,4 +24,4 @@ Route::resource('adtypes','AdtypesController');
 Route::resource('adplatforms','AdplatformsController');
 // End Routes for adplatforms 
 
-?>
+                    ?>

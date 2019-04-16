@@ -51,8 +51,10 @@ class DigitaladsController extends Controller {
 			} else {
 				$this->data['rowData'][$i]->status = '<span class="label label-success" >Done</span>';
 			}
-			if($utilized_budget == '' || is_null($utilized_budget) == true){
-				$this->data['rowData'][$i]->utilized_budget = '<a class="dt" data-da-id="'.$da_id.'" ><span class="label label-success" data-toggle="modal" data-target="#myModal">Add</span></a>';
+			if($budget_approved == '1'){
+				if($utilized_budget == '' || is_null($utilized_budget) == true){
+					$this->data['rowData'][$i]->utilized_budget = '<a class="dt" data-da-id="'.$da_id.'" ><span class="label label-success" data-toggle="modal" data-target="#myModal">Add</span></a>';
+				}
 			}
 			if(session('gid') == 1 || session('gid') == 2){
 				if($budget_approved == '0'){
@@ -60,10 +62,12 @@ class DigitaladsController extends Controller {
 				} else {
 					$this->data['rowData'][$i]->approved_budget = '<span class="label label-default" >Approved</span>';
 				}
-				if($utilized_budget_approved == '0'){
-					$this->data['rowData'][$i]->approved_utilized_budget = '<a class="dt approveUtilizedBudget" data-da-id="'.$da_id.'" ><span class="label label-success" >Approve</span></a>';
-				} else {
-					$this->data['rowData'][$i]->approved_utilized_budget = '<span class="label label-default" >Approved</span>';
+				if($utilized_budget != '' || is_null($utilized_budget) == false){
+					if($utilized_budget_approved == '0'){
+						$this->data['rowData'][$i]->approved_utilized_budget = '<a class="dt approveUtilizedBudget" data-da-id="'.$da_id.'" ><span class="label label-success" >Approve</span></a>';
+					} else {
+						$this->data['rowData'][$i]->approved_utilized_budget = '<span class="label label-default" >Approved</span>';
+					}
 				}
 			} else {
 				if($budget_approved == '0'){

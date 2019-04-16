@@ -40,52 +40,53 @@
 <script>
 
     $(function () {
+        
+        /**
+         * Options for Bar chart
+         */
+        var barOptions = {
+            scaleBeginAtZero : true,
+            scaleShowGridLines : true,
+            scaleGridLineColor : "rgba(0,0,0,.05)",
+            scaleGridLineWidth : 1,
+            barShowStroke : true,
+            barStrokeWidth : 1,
+            barValueSpacing : 5,
+            barDatasetSpacing : 1,
+            responsive:true
+        };
 
-        // /**
-        //  * Options for Bar chart
-        //  */
-        // var barOptions = {
-        //     scaleBeginAtZero : true,
-        //     scaleShowGridLines : true,
-        //     scaleGridLineColor : "rgba(0,0,0,.05)",
-        //     scaleGridLineWidth : 1,
-        //     barShowStroke : true,
-        //     barStrokeWidth : 1,
-        //     barValueSpacing : 5,
-        //     barDatasetSpacing : 1,
-        //     responsive:true
-        // };
+        /**
+         * Data for Bar chart
+         */
+        var barData = {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(98,203,49,0.5)",
+                    strokeColor: "rgba(98,203,49,0.8)",
+                    highlightFill: "rgba(98,203,49,0.75)",
+                    highlightStroke: "rgba(98,203,49,1)",
+                    data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+                }
+            ]
+        };
 
-        // /**
-        //  * Data for Bar chart
-        //  */
-        // var barData = {
-        //     labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-        //     datasets: [
-        //         {
-        //             label: "My First dataset",
-        //             fillColor: "rgba(220,220,220,0.5)",
-        //             strokeColor: "rgba(220,220,220,0.8)",
-        //             highlightFill: "rgba(220,220,220,0.75)",
-        //             highlightStroke: "rgba(220,220,220,1)",
-        //             data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
-        //         },
-        //         {
-        //             label: "My Second dataset",
-        //             fillColor: "rgba(98,203,49,0.5)",
-        //             strokeColor: "rgba(98,203,49,0.8)",
-        //             highlightFill: "rgba(98,203,49,0.75)",
-        //             highlightStroke: "rgba(98,203,49,1)",
-        //             data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
-        //         }
-        //     ]
-        // };
+        var ctx = document.getElementById("barOptions").getContext("2d");
+        var myNewChart = new Chart(ctx).Bar(barData, barOptions);
 
-        // var ctx = document.getElementById("barOptions").getContext("2d");
-        // var myNewChart = new Chart(ctx).Bar(barData, barOptions);
-
-        $( "select" ) .change(function () {   
-
+        $( "select" ) .change(function () {
+            
+            myNewChart.destroy();
             var c_id = $('#c_id').val(); 
             $.ajaxSetup({
             headers: {
