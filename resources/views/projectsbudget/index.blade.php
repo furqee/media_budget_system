@@ -27,7 +27,7 @@
 			<div class="row">
 				<div class="col-md-4"> 	
 					@if($access['is_add'] ==1)
-					<a href="{{ url('digitalads/create?return='.$return) }}" class="btn btn-default btn-sm"  
+					<a href="{{ url('projectsbudget/create?return='.$return) }}" class="btn btn-default btn-sm"  
 						title="{{ __('core.btn_create') }}"><i class=" fa fa-plus "></i> Create New </a>
 					@endif
 
@@ -65,33 +65,26 @@
 
 			<!-- Table Grid -->
 			<div class="table-responsive" style="padding-bottom: 70px;">
- 			{!! Form::open(array('url'=>'digitalads?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
+ 			{!! Form::open(array('url'=>'projectsbudget?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
 			
 		    <table class="table table-striped table-hover " id="{{ $pageModule }}Table">
 		        <thead>
 					<tr>
 						<th style="width: 3% !important;" class="number"> No </th>
-						<th  style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
-						<th  style="width: 10% !important;">{{ __('core.btn_action') }}</th>
-						
-						@foreach ($tableGrid as $t)
-							@if($t['view'] =='1')				
-								<?php $limited = isset($t['limited']) ? $t['limited'] :''; 
-								if(SiteHelpers::filterColumn($limited ))
-								{
-									$addClass='class="tbl-sorting" ';
-									if($insort ==$t['field'])
-									{
-										$dir_order = ($inorder =='desc' ? 'sort-desc' : 'sort-asc'); 
-										$addClass='class="tbl-sorting '.$dir_order.'" ';
-									}
-									echo '<th align="'.$t['align'].'" '.$addClass.' width="'.$t['width'].'">'.\SiteHelpers::activeLang($t['label'],(isset($t['language'])? $t['language'] : array())).'</th>';				
-								} 
-								?>
-							@endif
-						@endforeach
-						
-					  </tr>
+						<th style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
+						<th style="width: 10% !important;">{{ __('core.btn_action') }}</th>
+						<th> Assign To </th>
+						<th> Description </th>
+						<th> Client </th>
+						<th> Service </th>
+						<th> Budget </th>
+						<th> Final Budget </th>
+						<th> Status </th>
+						<th> Date </th>
+						<th> Start Date </th>
+						<th> End Date </th>
+						<th> Entry By </th>						
+					</tr>
 		        </thead>
 
 		        <tbody>        						
@@ -100,15 +93,14 @@
 							<td > {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td>
-
 							 	<div class="dropdown">
 								  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
 								  <ul class="dropdown-menu">
 								 	@if($access['is_detail'] ==1)
-									<li><a href="{{ url('digitalads/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>
+									<li><a href="{{ url('projectsbudget/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>
 									@endif
 									@if($access['is_edit'] ==1)
-									<li><a  href="{{ url('digitalads/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}"> {{ __('core.btn_edit') }} </a></li>
+									<li><a  href="{{ url('projectsbudget/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}"> {{ __('core.btn_edit') }} </a></li>
 									@endif
 									<li class="divider" role="separator"></li>
 									@if($access['is_remove'] ==1)
@@ -117,19 +109,18 @@
 									@endif 
 								  </ul>
 								</div>
-
 							</td>														
-						 @foreach ($tableGrid as $field)
-							 @if($field['view'] =='1')
-							 	<?php $limited = isset($field['limited']) ? $field['limited'] :''; ?>
-							 	@if(SiteHelpers::filterColumn($limited ))
-							 	 <?php $addClass= ($insort ==$field['field'] ? 'class="tbl-sorting-active" ' : ''); ?>
-								 <td align="{{ $field['align'] }}" width=" {{ $field['width'] }}"  {!! $addClass !!} >					 
-								 	{!! SiteHelpers::formatRows($row->{$field['field']},$field ,$row ) !!}						 
-								 </td>
-								@endif	
-							 @endif					 
-						 @endforeach			 
+						 	<td> {{ SiteHelpers::gridDisplayView($row->assign_to,'assign_to','1:tb_users:id:first_name') }}</td>
+						 	<td> {{ $row->description }}</td>
+						 	<td> {{ SiteHelpers::gridDisplayView($row->client,'client','1:tb_clients:id:name') }} </td>
+						 	<td> {{ SiteHelpers::gridDisplayView($row->service,'service','1:tb_service:id:service') }}</td>
+						 	<td> {{ $row->budget }}</td>
+						 	<td> {!! $row->final_budget !!}</td>
+						 	<td> {!! $row->status !!}</td>
+						 	<td> {{ $row->date }}</td>
+						 	<td> {{ $row->start_date }}</td>
+						 	<td> {{ $row->end_date }}</td>
+						 	<td> {{ SiteHelpers::gridDisplayView($row->entry_by,'entry_by','1:tb_users:id:first_name') }}</td>
 		                </tr>
 						
 		            @endforeach
@@ -149,6 +140,7 @@
 		</div>
 	</div>
 </div>
+
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -185,8 +177,8 @@ $(document).ready(function(){
 			$('input[name="action_task"]').val('copy');
 			$('#SximoTable').submit();// do the rest here	
 		}
-	})	
-	
+	});
+
 	$(".dt").click(function(){
 		var da_id = $(this).data("da-id");
 		$('#da_id').val(da_id);
@@ -206,7 +198,7 @@ $(document).ready(function(){
             });
 
             jQuery.ajax({
-                url: "{{ url('/utilized_amount') }}",
+                url: "{{ url('/final_budget') }}",
                 method: 'post',
                 data: {
                     amount: amount,
@@ -239,7 +231,7 @@ $(document).ready(function(){
 	    }
 	});
 
-	$(".approveBudget").click(function(){
+	$(".statusUpdate").click(function(){
 		var da_id = $('#da_id').val();
 		$.ajaxSetup({
                 headers: {
@@ -271,40 +263,6 @@ $(document).ready(function(){
             }
         });
 	});
-
-	$(".approveUtilizedBudget").click(function(){
-		var da_id = $('#da_id').val();
-		$.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-
-        jQuery.ajax({
-            url: "{{ url('/approved_utilized_budget') }}",
-            method: 'post',
-            data: {
-                da_id: da_id
-            },
-            success: function (result) {
-                if(result.success == true){
-                	$.toast({
-					    heading: 'success',
-					    text: 'message',
-					    position: 'top-right',		           
-					   	icon: 'success',
-					    hideAfter: 1000,
-					    stack: 6
-					});
-					setTimeout(function(){ location.reload(); }, 1000);
-                } else {
-                	alert('There must be some Error!')
-                }
-                
-            }
-        });
-	});
-
 });	
 </script>	
 	

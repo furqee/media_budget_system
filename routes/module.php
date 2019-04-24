@@ -29,4 +29,14 @@ Route::resource('adplatforms','AdplatformsController');
 Route::resource('reportdigitalads','ReportdigitaladsController');
 // End Routes for reportdigitalads 
 
+                    
+// Start Routes for services 
+Route::resource('services','ServicesController');
+// End Routes for services 
+
+                    
+// Start Routes for projectsbudget 
+Route::resource('projectsbudget','ProjectsbudgetController');
+// End Routes for projectsbudget 
+
                     ?>

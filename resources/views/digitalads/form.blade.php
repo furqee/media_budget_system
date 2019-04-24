@@ -29,7 +29,7 @@
             </ul>
             <div class="col-md-12">
                <fieldset>
-                  <legend> Digital Ads</legend>
+                  <legend> Basic Info</legend>
                   {!! Form::hidden('id', $row['id']) !!}					
                   <div class="form-group  " >
                      <label for="Ad Name" class=" control-label col-md-4 text-left"> Campaign Name <span class="asterix"> * </span></label>
@@ -56,6 +56,7 @@
                      <div class="col-md-2">
                      </div>
                   </div>
+                  <legend> Add Details</legend>
                   <div class="form-group  " >
                      <label for="Ad Type" class=" control-label col-md-4 text-left"> Ad Type <span class="asterix"> * </span></label>
                      <div class="col-md-6">
@@ -110,7 +111,8 @@
                      <label for="Card Used" class=" control-label col-md-4 text-left"> Card Used <span class="asterix"> * </span></label>
                      <div class="col-md-6">
                         <select name='card_used' rows='5' id='card_used' class='select2 '  >
-                        	<option value="own">Own</option>
+                        	<option value="">-- Please Select --</option>
+                           <option value="own">Own</option>
                         	<option value="client">Client's</option>
                         </select> 
                      </div>
@@ -213,12 +215,15 @@
 	  		$('#tbl_options tbody').append(html);
 	  		i++;
 	  		$("#ad_name").prop('readonly', true);
-	  		$("#client").prop('readonly', true);
-	  		$("#platform").prop('readonly', true);
+	  		$("#client").prop("disabled", true);
+	  		$("#platform").prop("disabled", true);
+
+         $("#ad_type").val('').trigger('change.select2');
+         $("#card_used").val('').trigger('change.select2');
 	  		$("#from").val('');
-	   		$("#to").val('');
-	   		$("#strategy").val('');
-	   		$("#budget").val('');
+   		$("#to").val('');
+   		$("#strategy").val('');
+   		$("#budget").val('');
 	  	} else {
 	  		alert('Please Fill All the required Fields.');
 	  	}

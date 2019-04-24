@@ -27,7 +27,7 @@
 			<div class="row">
 				<div class="col-md-4"> 	
 					@if($access['is_add'] ==1)
-					<a href="{{ url('digitalads/create?return='.$return) }}" class="btn btn-default btn-sm"  
+					<a href="{{ url('services/create?return='.$return) }}" class="btn btn-default btn-sm"  
 						title="{{ __('core.btn_create') }}"><i class=" fa fa-plus "></i> Create New </a>
 					@endif
 
@@ -65,7 +65,7 @@
 
 			<!-- Table Grid -->
 			<div class="table-responsive" style="padding-bottom: 70px;">
- 			{!! Form::open(array('url'=>'digitalads?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
+ 			{!! Form::open(array('url'=>'services?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
 			
 		    <table class="table table-striped table-hover " id="{{ $pageModule }}Table">
 		        <thead>
@@ -105,10 +105,10 @@
 								  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
 								  <ul class="dropdown-menu">
 								 	@if($access['is_detail'] ==1)
-									<li><a href="{{ url('digitalads/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>
+									<li><a href="{{ url('services/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>
 									@endif
 									@if($access['is_edit'] ==1)
-									<li><a  href="{{ url('digitalads/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}"> {{ __('core.btn_edit') }} </a></li>
+									<li><a  href="{{ url('services/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}"> {{ __('core.btn_edit') }} </a></li>
 									@endif
 									<li class="divider" role="separator"></li>
 									@if($access['is_remove'] ==1)
@@ -149,32 +149,7 @@
 		</div>
 	</div>
 </div>
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Please Add Utilized Budget</h4>
-        </div>
-        <div class="modal-body">
-        <form role="form">
-          <div class="form-group  " >
-             <label for="Amount" class=" control-label col-md-4 text-left"> Amount </label>
-             <div class="col-md-8">
-             	<input  type='hidden' name='da_id' id='da_id' value='' />
-                <input  type='text' name='amount' id='amount' value='' required class='form-control input-sm ' /> 
-             </div>
-          </div>
-        </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="submitForm" class="btn btn-primary submitBtn">Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
 <script>
 $(document).ready(function(){
@@ -187,124 +162,6 @@ $(document).ready(function(){
 		}
 	})	
 	
-	$(".dt").click(function(){
-		var da_id = $(this).data("da-id");
-		$('#da_id').val(da_id);
-	});
-
-	$("#submitForm").click(function(){ 
-		var da_id = $('#da_id').val();
-	  	var amount = $('#amount').val();
-	    if(amount.trim() == ''){
-	        alert('Please enter amount.');
-	        return false;
-	    } else{
-	    	$.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-
-            jQuery.ajax({
-                url: "{{ url('/utilized_amount') }}",
-                method: 'post',
-                data: {
-                    amount: amount,
-                    da_id: da_id
-                },
-                beforeSend: function () {
-	                $('.submitBtn').attr("disabled","disabled");
-	                $('.modal-body').css('opacity', '.5');
-	            },
-                success: function (result) {
-                    if(result.success == true){
-                    	$('#myModal').modal('hide');
-                    	$('.submitBtn').removeAttr("disabled");
-	                	$('.modal-body').css('opacity', '');
-	                	$.toast({
-					    heading: 'success',
-					    text: 'message',
-					    position: 'top-right',		           
-					   	icon: 'success',
-					    hideAfter: 1000,
-					    stack: 6
-					});
-					setTimeout(function(){ location.reload(); }, 1000);
-                    } else {
-                    	alert('There must be some Error!')
-                    }
-                    
-                }
-            });
-	    }
-	});
-
-	$(".approveBudget").click(function(){
-		var da_id = $('#da_id').val();
-		$.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-
-        jQuery.ajax({
-            url: "{{ url('/status_update') }}",
-            method: 'post',
-            data: {
-                da_id: da_id
-            },
-            success: function (result) {
-                if(result.success == true){
-                	$.toast({
-					    heading: 'success',
-					    text: 'message',
-					    position: 'top-right',		           
-					   	icon: 'success',
-					    hideAfter: 1000,
-					    stack: 6
-					});
-					setTimeout(function(){ location.reload(); }, 1000);
-                } else {
-                	alert('There must be some Error!')
-                }
-                
-            }
-        });
-	});
-
-	$(".approveUtilizedBudget").click(function(){
-		var da_id = $('#da_id').val();
-		$.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-
-        jQuery.ajax({
-            url: "{{ url('/approved_utilized_budget') }}",
-            method: 'post',
-            data: {
-                da_id: da_id
-            },
-            success: function (result) {
-                if(result.success == true){
-                	$.toast({
-					    heading: 'success',
-					    text: 'message',
-					    position: 'top-right',		           
-					   	icon: 'success',
-					    hideAfter: 1000,
-					    stack: 6
-					});
-					setTimeout(function(){ location.reload(); }, 1000);
-                } else {
-                	alert('There must be some Error!')
-                }
-                
-            }
-        });
-	});
-
 });	
 </script>	
 	

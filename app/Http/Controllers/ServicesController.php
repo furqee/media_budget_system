@@ -1,28 +1,28 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\Digitalads;
+use App\Models\Services;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
 
 
-class DigitaladsController extends Controller {
+class ServicesController extends Controller {
 
 	protected $layout = "layouts.main";
 	protected $data = array();	
-	public $module = 'digitalads';
+	public $module = 'services';
 	static $per_page	= '10';
 
 	public function __construct()
 	{		
 		parent::__construct();
-		$this->model = new Digitalads();	
+		$this->model = new Services();	
 		
 		$this->info = $this->model->makeInfo( $this->module);	
 		$this->data = array(
 			'pageTitle'	=> 	$this->info['title'],
 			'pageNote'	=>  $this->info['note'],
-			'pageModule'=> 'digitalads',
+			'pageModule'=> 'services',
 			'return'	=> self::returnUrl()
 			
 		);
@@ -38,52 +38,6 @@ class DigitaladsController extends Controller {
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 		// Render into template
-		//dd($this->data);
-		for ($i=0; $i < count($this->data['rowData']) ; $i++) { 
-			$utilized_budget = $this->data['rowData'][$i]->utilized_budget;
-			$da_id = $this->data['rowData'][$i]->id;
-			$budget_approved = $this->data['rowData'][$i]->approved_budget;
-			$utilized_budget_approved = $this->data['rowData'][$i]->approved_utilized_budget;
-			$status = $this->data['rowData'][$i]->status;
-
-			if($status == 'running'){
-				$this->data['rowData'][$i]->status = '<span class="label label-default" >Running</span>';
-			} else {
-				$this->data['rowData'][$i]->status = '<span class="label label-success" >Done</span>';
-			}
-			if($budget_approved == '1'){
-				if($utilized_budget == '' || is_null($utilized_budget) == true){
-					$this->data['rowData'][$i]->utilized_budget = '<a class="dt" data-da-id="'.$da_id.'" ><span class="label label-success" data-toggle="modal" data-target="#myModal">Add</span></a>';
-				}
-			}
-			if(session('gid') == 1 || session('gid') == 2){
-				if($budget_approved == '0'){
-					$this->data['rowData'][$i]->approved_budget = '<a class="dt approveBudget" data-da-id="'.$da_id.'" ><span class="label label-success" >Approve</span></a>';
-				} else {
-					$this->data['rowData'][$i]->approved_budget = '<span class="label label-default" >Approved</span>';
-				}
-				if($utilized_budget != '' || is_null($utilized_budget) == false){
-					if($utilized_budget_approved == '0'){
-						$this->data['rowData'][$i]->approved_utilized_budget = '<a class="dt approveUtilizedBudget" data-da-id="'.$da_id.'" ><span class="label label-success" >Approve</span></a>';
-					} else {
-						$this->data['rowData'][$i]->approved_utilized_budget = '<span class="label label-default" >Approved</span>';
-					}
-				}
-			} else {
-				if($budget_approved == '0'){
-					$this->data['rowData'][$i]->approved_budget = '<span class="label label-warning" data-toggle="modal" data-target="#myModal">Not Approved</span>';
-				} else {
-					$this->data['rowData'][$i]->approved_budget = '<span class="label label-success" data-toggle="modal" data-target="#myModal">Approved</span>';
-				}
-				if($utilized_budget_approved == '0'){
-					$this->data['rowData'][$i]->approved_utilized_budget = '<span class="label label-warning" data-toggle="modal" data-target="#myModal">Not Approved</span>';
-				} else {
-					$this->data['rowData'][$i]->approved_utilized_budget = '<span class="label label-success" data-toggle="modal" data-target="#myModal">Approved</span>';
-				}
-			}
-			
-		}
-
 		return view( $this->module.'.index',$this->data);
 	}	
 
@@ -149,38 +103,26 @@ class DigitaladsController extends Controller {
 		switch ($task)
 		{
 			default:
-				$ad_name = $request->input('ad_name');
-				$client = $request->input('client');
-				$platform = $request->input('platform');
-				$ad_type = $request->input('adt');
-				$from = $request->input('frd');
-				$to = $request->input('tod');
-				$strategy = $request->input('strg');
-				$budget = $request->input('bdg');
-				$card_used = $request->input('crd');
-				$entry_by = $request->input('entry_by');
-				
-				for ($i=0; $i < count($ad_type); $i++) { 
-					$data['ad_name'] = $ad_name;
-					$data['client'] = $client;
-					$data['platform'] = $platform;
-					$data['ad_type'] = $ad_type[$i];
-					$data['from'] = $from[$i];
-					$data['to'] = $to[$i];
-					$data['strategy'] = $strategy[$i];
-					$data['budget'] = $budget[$i];
-					$data['status'] = 'running';
-					$data['card_used'] = $card_used[$i];
-					$data['entry_by'] = $entry_by;
-
+				$rules = $this->validateForm();
+				$validator = Validator::make($request->all(), $rules);
+				if ($validator->passes()) 
+				{
+					$data = $this->validatePost( $request );
 					$id = $this->model->insertRow($data , $request->input( $this->info['key']));
-				
+					
 					/* Insert logs */
 					$this->model->logs($request , $id);
+					if(!is_null($request->input('apply')))
+						return redirect( $this->module .'/'.$id.'/edit?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
+
+					return redirect( $this->module .'?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
 				} 
+				else {
+					return redirect($this->module.'/'. $request->input(  $this->info['key'] ).'/edit')
+							->with('message',__('core.note_error'))->with('status','error')
+							->withErrors($validator)->withInput();
 
-				return redirect( $this->module .'?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
-
+				}
 				break;
 			case 'public':
 				return $this->store_public( $request );
@@ -231,8 +173,8 @@ class DigitaladsController extends Controller {
 	public static function display(  )
 	{
 		$mode  = isset($_GET['view']) ? 'view' : 'default' ;
-		$model  = new Digitalads();
-		$info = $model::makeInfo('digitalads');
+		$model  = new Services();
+		$info = $model::makeInfo('services');
 		$data = array(
 			'pageTitle'	=> 	$info['title'],
 			'pageNote'	=>  $info['note']			
@@ -246,7 +188,7 @@ class DigitaladsController extends Controller {
 				$data['row'] =  $row;
 				$data['fields'] 		=  \SiteHelpers::fieldLang($info['config']['grid']);
 				$data['id'] = $id;
-				return view('digitalads.public.view',$data);			
+				return view('services.public.view',$data);			
 			}			
 		} 
 		else {
@@ -270,7 +212,7 @@ class DigitaladsController extends Controller {
 			$pagination->setPath('');
 			$data['i']			= ($page * $params['limit'])- $params['limit']; 
 			$data['pagination'] = $pagination;
-			return view('digitalads.public.index',$data);	
+			return view('services.public.index',$data);	
 		}
 
 	}
@@ -290,27 +232,5 @@ class DigitaladsController extends Controller {
 
 		}	
 	
-	}
-	public function utlizedAmount( Request $request)
-	{
-		$amount = $request->input('amount');
-		$da_id = $request->input('da_id');
-		\DB::update("UPDATE `tb_digital_ads` SET `utilized_budget` = $amount, `status` = 'done' WHERE id = $da_id");
-		$this->model->logs($request , $da_id);
-		return response()->json(['success' => true]);
-	}
-	public function approvedBudget( Request $request)
-	{
-		$da_id = $request->input('da_id');
-		\DB::update("UPDATE `tb_digital_ads` SET `approved_budget` = 1 WHERE id = $da_id");
-		$this->model->logs($request , $da_id);
-		return response()->json(['success' => true]);
-	}
-	public function approvedUtilizedBudget( Request $request)
-	{
-		$da_id = $request->input('da_id');
-		\DB::update("UPDATE `tb_digital_ads` SET `approved_utilized_budget` = 1 WHERE id = $da_id");
-		$this->model->logs($request , $da_id);
-		return response()->json(['success' => true]);
 	}
 }
