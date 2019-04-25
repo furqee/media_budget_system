@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+<style type="text/css">
+   .control-label {
+      text-align: left !important;
+   }
+</style>
 <section class="page-header row">
    <h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
    <ol class="breadcrumb">
@@ -27,7 +32,7 @@
                <li>{{ $error }}</li>
                @endforeach
             </ul>
-            <div class="col-md-12">
+            <div class="col-md-4">
                <fieldset>
                   <legend> Basic Info</legend>
                   {!! Form::hidden('id', $row['id']) !!}					
@@ -56,6 +61,10 @@
                      <div class="col-md-2">
                      </div>
                   </div>
+                  </fieldset>
+            </div>
+            <div class="col-md-8">
+               <fieldset>
                   <legend> Add Details</legend>
                   <div class="form-group  " >
                      <label for="Ad Type" class=" control-label col-md-4 text-left"> Ad Type <span class="asterix"> * </span></label>
@@ -99,7 +108,7 @@
                   <div class="form-group  " >
                      <label for="Budget" class=" control-label col-md-4 text-left"> Budget <span class="asterix"> * </span></label>
                      <div class="col-md-6">
-                        <input  type='text' name='budget' id='budget' value='{{ $row['budget'] }}' 
+                        <input  type='number' name='budget' id='budget' value='{{ $row['budget'] }}' 
                         class='form-control input-sm ' /> 
                      </div>
                      <div class="col-md-2">
@@ -132,6 +141,8 @@
                </fieldset>
             </div>
             <div class="col-md-12">
+               <fieldset>
+                  <legend> Entries</legend>
             	<table class="table table-hover" id="tbl_options" style="display: none;">
 				  <thead style="background: #673ab7; color: white;">
 				    <tr>
@@ -148,6 +159,7 @@
 				  <tbody>
 				  </tbody>
 				</table>
+            </fieldset>
             </div>
          </div>
       </div>

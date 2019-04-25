@@ -77,8 +77,11 @@
 						</div> 					
 						<div class="form-group  " >
 							<label for="Service" class=" control-label col-md-4 text-left"> Service <span class="asterix"> * </span></label>
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<select name='service' rows='5' id='service' class='select2 '  required ></select> 
+							</div> 
+							<div class="col-md-4">
+								<button type="button" class="btn btn-default" id="new_service"><i class="fa fa-plus"></i> &nbsp; Add</button>
 							</div> 
 							<div class="col-md-2">
 
@@ -87,7 +90,7 @@
 						<div class="form-group  " >
 							<label for="Budget" class=" control-label col-md-4 text-left"> Budget <span class="asterix"> * </span></label>
 							<div class="col-md-6">
-								<input  type='text' name='budget' id='budget' value='{{ $row['budget'] }}' 
+								<input  type='number' name='budget' id='budget' value='{{ $row['budget'] }}' 
 								class='form-control input-sm ' required /> 
 							</div> 
 							<div class="col-md-2">
@@ -172,7 +175,15 @@
 			});
 
 		$("#new_client").click(function(){
-		  	window.location.href = "{{ url('/clients/create?return=') }}";
+			window.open("{{ url('/clients/create?return=') }}",'_blank');
+			//window.open("{{ url('/clients/create?return=') }}");
+		  	// window.location.href = "{{ url('/clients/create?return=') }}";
+		});
+
+		$("#new_service").click(function(){
+			window.open("{{ url('/services/create?return=') }}",'_blank');
+			//window.open("{{ url('/clients/create?return=') }}");
+		  	// window.location.href = "{{ url('/clients/create?return=') }}";
 		});
 
 		$('.removeMultiFiles').on('click',function(){

@@ -66,7 +66,7 @@
 						<div class="form-group  " >
 							<label for="Amount Spend" class=" control-label col-md-4 text-left"> Amount Spend <span class="asterix"> * </span></label>
 							<div class="col-md-6">
-								<input  type='text' name='amount_spend' id='amount_spend' value='{{ $row['amount_spend'] }}' 
+								<input  type='number' name='amount_spend' id='amount_spend' value='{{ $row['amount_spend'] }}' 
 								class='form-control input-sm ' /> 
 							</div> 
 							<div class="col-md-2">

@@ -155,7 +155,7 @@
              <label for="Amount" class=" control-label col-md-4 text-left"> Amount </label>
              <div class="col-md-8">
              	<input  type='hidden' name='da_id' id='da_id' value='' />
-                <input  type='text' name='amount' id='amount' value='' required class='form-control input-sm ' /> 
+                <input  type='number' name='amount' id='amount' value='' required class='form-control input-sm ' /> 
              </div>
           </div>
         </form>
