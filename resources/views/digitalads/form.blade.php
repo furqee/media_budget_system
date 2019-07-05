@@ -51,6 +51,7 @@
                         <select name='client' rows='5' id='client' class='select2 '  ></select> 
                      </div>
                      <div class="col-md-2">
+                        <input type="hidden" name="clientID">
                      </div>
                   </div>
                   <div class="form-group  " >
@@ -59,6 +60,7 @@
                         <select name='platform' rows='5' id='platform' class='select2 '  ></select> 
                      </div>
                      <div class="col-md-2">
+                        <input type="hidden" name="platformID">
                      </div>
                   </div>
                   </fieldset>
@@ -224,11 +226,13 @@
    			html += '<input type="hidden" name="strg[]" value="'+ strategy +'" />';
    			html += '<input type="hidden" name="bdg[]" value="'+ budget +'" />';
    			html += '<input type="hidden" name="crd[]" value="'+ card_used_id +'" /></tr>';
+            $('input[name="clientID"]').val(client);
+            $('input[name="platformID"]').val(platform);
 	  		$('#tbl_options tbody').append(html);
 	  		i++;
 	  		$("#ad_name").prop('readonly', true);
-	  		$("#client").prop("disabled", true);
-	  		$("#platform").prop("disabled", true);
+	  		$("#client").select2().enable(false);
+	  		$("#platform").select2().enable(false);
 
          $("#ad_type").val('').trigger('change.select2');
          $("#card_used").val('').trigger('change.select2');

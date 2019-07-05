@@ -150,8 +150,8 @@ class DigitaladsController extends Controller {
 		{
 			default:
 				$ad_name = $request->input('ad_name');
-				$client = $request->input('client');
-				$platform = $request->input('platform');
+				$client = $request->input('clientID');
+				$platform = $request->input('platformID');
 				$ad_type = $request->input('adt');
 				$from = $request->input('frd');
 				$to = $request->input('tod');
@@ -159,7 +159,7 @@ class DigitaladsController extends Controller {
 				$budget = $request->input('bdg');
 				$card_used = $request->input('crd');
 				$entry_by = $request->input('entry_by');
-				
+				//dd($request->input());
 				for ($i=0; $i < count($ad_type); $i++) { 
 					$data['ad_name'] = $ad_name;
 					$data['client'] = $client;
