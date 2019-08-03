@@ -248,7 +248,7 @@ $(document).ready(function(){
             });
 
         jQuery.ajax({
-            url: "{{ url('/status_update') }}",
+            url: "{{ url('/approved_budget') }}",
             method: 'post',
             data: {
                 da_id: da_id
